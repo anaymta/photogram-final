@@ -12,4 +12,10 @@
 #  owner_id       :integer
 #
 class Photo < ApplicationRecord
+  validates(:owner, presence: true)
+  validates(:image, presence: true)
+  validates(:caption, presence: true)
+  has_many  :likes, class_name: "Like", foreign_key: "photo_id", dependent: :destroy
+  has_many  :comments, class_name: "Comment", foreign_key: "photo_id", dependent: :destroy
+  belongs_to :owner, required: true, class_name: "User", foreign_key: "owner_id"
 end

@@ -21,7 +21,7 @@ class UsersController < ApplicationController
     end
 
     def profile
-      @this_user = User.where(:username => params.fetch("username"))[0]
+      @this_user = User.where(:username => params.fetch("username")).first
       if current_user_permission?(@this_user)
         render({:template => "users/profile"})
       else
@@ -30,13 +30,13 @@ class UsersController < ApplicationController
     end 
 
     def liked_photos
-      @this_user = User.where(:username => params.fetch("username"))[0]
+      @this_user = User.where(:username => params.fetch("username")).first
 
       render({:template => "users/liked_photos"})
     end 
 
     def feed
-      @this_user = User.where(:username => params.fetch("username"))[0]
+      @this_user = User.where(:username => params.fetch("username")).first
       @all_following = @this_user.follow_sent.where(:status => "accepted").pluck(:recipient_id)
       @all_following = Photo.where(owner_id: @all_following)
 
@@ -44,7 +44,7 @@ class UsersController < ApplicationController
     end
 
     def discover
-      @this_user = User.where(:username => params.fetch("username"))[0]
+      @this_user = User.where(:username => params.fetch("username")).first
       @all_following = User.where(id: @this_user.follow_sent.where(:status => "accepted").pluck(:recipient_id))
       @all_following_likes = Like.where(fan_id: @all_following.pluck(:id))
       @all_following_liked_photos = Photo.where(id: @all_following_likes.pluck(:photo_id))
