@@ -32,13 +32,15 @@ class UsersController < ApplicationController
     def liked_photos
       @this_user = User.where(:username => params.fetch("username")).first
 
+      @likes_sent = Like.where(:fan_id => @this_user.id)
+
       render({:template => "users/liked_photos"})
     end 
 
     def feed
       @this_user = User.where(:username => params.fetch("username")).first
       @all_following = @this_user.follow_sent.where(:status => "accepted").pluck(:recipient_id)
-      @all_following = Photo.where(owner_id: @all_following)
+      @all_following_photos = Photo.where(owner_id: @all_following)
 
       render({:template => "users/feed"})
     end
