@@ -1,8 +1,13 @@
 Rails.application.routes.draw do
 
-  root "photos#index"
-  
+  root "users#index"
+
   devise_for :users
+
+  # Routes for the User resource:
+
+  get("/users", {:controller => "users", :action => "index"})
+
   
   # Routes for the Like resource:
 
